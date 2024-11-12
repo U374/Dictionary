@@ -17,6 +17,9 @@ Welcome to the **Dictionary Web App**! This project is a simple and responsive o
 
 ## Getting Started
 
+### Try Now
+You can try it here :- https://u374.github.io/Dictionary/
+
 ### Prerequisites
 
 You only need a web browser to view and run this project.
