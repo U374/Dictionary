@@ -26,7 +26,7 @@ You only need a web browser to view and run this project.
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/U374/dictionary-web-app.git
+   git clone https://github.com/U374/Dictionary.git
 
 ### Usage
 
