@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dictionary</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div id="first">
+      <h1>Dictionary</h1>
+      <input type="text" placeholder="Search for any word" id="input">
+      <button id="search-btn">Search</button>
+    </div>
+    <div id="display"></div>
+  </div>
+
+
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+  <div class="bubble"></div>
+
+
+  <script>
+    let input = document.querySelector('#input');
+    let btn = document.querySelector('#search-btn');
+    let result = document.querySelector('#display');
+
+    const fetchDefinition = async () => {
+      try {
+        let user = input.value
+        let api = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + user)
+        if (!api.ok) {
+          console.log("api have some issues")
+          return;
+        }
+        const got = await api.json();
+        let response = got[0].word
+        let word = response.toUpperCase();
+        let pos = got[0].meanings[0].partOfSpeech
+        let r = got[0].meanings[0].definitions[0].definition
+        let ex = got[0].meanings[0].definitions[0].example
+
+        if (ex !== undefined) {
+          result.innerHTML = `<strong>${word}</strong> <br> <strong>Part of Speech:</strong> ${pos} <br> <strong>definition:</strong> ${r} <br> <strong>Ex:</strong> ${ex}`
+        }
+        else {
+          result.innerHTML = `<strong>${word}</strong> <br> <strong>Part of Speech:</strong> ${pos} <br> <strong>definition:</strong> ${r}`
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+    };
+
+
+    btn.addEventListener('click', fetchDefinition);
+  </script>
+
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #1a1a1a;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #e0e0e0;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background-color: #2c2c2c;
+      color: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ffdbac;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      outline: none;
+      background-color: #444;
+      color: #fff;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      background-color: #555;
+      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    #search-btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #ff7f50;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #search-btn:hover {
+      background-color: #ff6347;
+      transform: scale(1.05);
+    }
+
+    #display {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #3a3a3a;
+      color: #e0e0e0;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      text-align: left;
+      line-height: 1.5;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+
+    #display strong {
+      color: #ffdbac;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      width: 50px;
+      height: 50px;
+      animation: float 10s infinite;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .bubble:nth-child(odd) {
+      background-color: rgba(255, 165, 0, 0.6);
+    }
+
+    .bubble:nth-child(even) {
+      background-color: rgba(0, 255, 255, 0.6);
+    }
+
+    .bubble:hover {
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-300px) rotate(180deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(360deg);
+      }
+    }
+
+    /* Bubble positions and durations */
+    .bubble:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-duration: 8s;
+    }
+
+    .bubble:nth-child(2) {
+      top: 30%;
+      left: 25%;
+      animation-duration: 7s;
+    }
+
+    .bubble:nth-child(3) {
+      top: 50%;
+      left: 40%;
+      animation-duration: 9s;
+    }
+
+    .bubble:nth-child(4) {
+      top: 60%;
+      left: 60%;
+      animation-duration: 6s;
+    }
+
+    .bubble:nth-child(5) {
+      top: 20%;
+      left: 70%;
+      animation-duration: 10s;
+    }
+
+    .bubble:nth-child(6) {
+      top: 10%;
+      left: 80%;
+      animation-duration: 8s;
+    }
+
+    .bubble:nth-child(7) {
+      top: 80%;
+      left: 20%;
+      animation-duration: 7s;
+    }
+
+    .bubble:nth-child(8) {
+      top: 40%;
+      left: 50%;
+      animation-duration: 6s;
+    }
+
+    .bubble:nth-child(9) {
+      top: 70%;
+      left: 30%;
+      animation-duration: 9s;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      body {
+        font-size: 14px;
+        justify-content: flex-start;
+        overflow-y: auto;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 20px;
+        box-shadow: none;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+      }
+
+      #search-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+
+      #display {
+        font-size: 1rem;
+        padding: 15px;
+      }
+
+      .bubble {
+        width: 30px;
+        height: 30px;
+      }
+
+      .bubble:nth-child(1),
+      .bubble:nth-child(2),
+      .bubble:nth-child(3),
+      .bubble:nth-child(4),
+      .bubble:nth-child(5),
+      .bubble:nth-child(6),
+      .bubble:nth-child(7),
+      .bubble:nth-child(8),
+      .bubble:nth-child(9) {
+        animation-duration: 5s;
+      }
+    }
+  </style>
+</body>
+
+</html>
